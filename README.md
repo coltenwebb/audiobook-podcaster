@@ -6,10 +6,17 @@ This is a audiobook server, using podcast technology. You can listen to the audi
 
 ## Setup
 
-Clone the repository. To make sure it works, add an audiobook to `./audiobooks/` (just put the folder in there, for example `./audiobooks/book/chapter01.mp3` is a file that would be found)
+Clone the repository.
+
+```
+git clone https://github.com/SirSpoony/audiobook-podcaster.git
+```
+
+To make sure it works, add an audiobook to `./audiobooks/` (just put the folder in there, for example `./audiobooks/book/chapter01.mp3` is a file that would be found)
 
 Start the server using `python serve.py`. Using a browser, navigate to `localhost:8000/gen` and you will see a list of available podcast xml files.
 
-If this all works, you can edit `serve.py` and change PORT and HOST to what you want.
+If this all works, you can edit `serve.py` and change `PORT` and `HOST` to what you want.
 
-
+### Dependencies
+- feedgen >0.6.1
