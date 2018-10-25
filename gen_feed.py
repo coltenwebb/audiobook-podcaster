@@ -7,7 +7,7 @@ import parse_dir
 def gen_feed(host):
     # Make sure we have somewhere to save the files
     if not os.path.isdir('./gen'):
-        print('There is no audiobooks directory. Create ./audiobooks')
+        print('There is no gen directory. Create ./gen')
 
     # Uses parse_dir.py to get the books and files
     books = parse_dir.getbooks('./audiobooks')
