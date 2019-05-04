@@ -1,5 +1,10 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from gen_feed import gen_feed
+import logging.config , os
+
+
+LOG_CONF='logging.ini'
+if os.path.exists(LOG_CONF): logging.config.fileConfig(LOG_CONF) 
 
 PORT = 8000
 HOST = 'http://localhost:' + str(PORT)

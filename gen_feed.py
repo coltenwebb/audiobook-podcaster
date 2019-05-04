@@ -2,6 +2,7 @@ import os
 from feedgen.feed import FeedGenerator
 import parse_dir
 from requests.utils import requote_uri
+import logging
 
 # Generates the .xml files in the ./gen directory
 def gen_feed(host):
@@ -37,6 +38,7 @@ def gen_feed(host):
         # Saves the file
         rss_file_path = os.path.join('./gen/', book + '.xml')
         ensure_dir(rss_file_path)
+        logging.info("generate feed: %s" % rss_file_path)
         fg.rss_file(rss_file_path)
 
 
