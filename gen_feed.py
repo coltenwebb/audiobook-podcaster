@@ -5,7 +5,7 @@ from requests.utils import requote_uri
 import logging
 
 # Generates the .xml files in the ./gen directory
-def gen_feed(host):
+def gen_feed(endpoint):
     # Make sure we have somewhere to save the files
     if not os.path.isdir('./gen'):
         print('There is no audiobooks directory. Create ./audiobooks')
@@ -22,7 +22,7 @@ def gen_feed(host):
 
         for (file_name, file_path) in files:
             # the 1: removes the period because the base dir is ./audiobooks
-            url = host + file_path[1:]
+            url = endpoint + file_path[1:]
 
             fe = fg.add_entry()
             fe.id(url)
@@ -31,7 +31,7 @@ def gen_feed(host):
             fe.enclosure(requote_uri(url), str(os.path.getsize(file_path)), 'audio/mpeg')
 
         fg.title('Audiobook: ' + book)
-        fg.link(href=host, rel='self')
+        fg.link(href=endpoint, rel='self')
         fg.description('A book')
         fg.rss_str(pretty=True)
 
