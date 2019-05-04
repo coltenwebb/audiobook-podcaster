@@ -1,7 +1,7 @@
 import os
 from feedgen.feed import FeedGenerator
 import parse_dir
-
+from requests.utils import requote_uri
 
 # Generates the .xml files in the ./gen directory
 def gen_feed(host):
@@ -10,7 +10,7 @@ def gen_feed(host):
         print('There is no audiobooks directory. Create ./audiobooks')
 
     # Uses parse_dir.py to get the books and files
-    books = parse_dir.getbooks('./audiobooks')
+    books = parse_dir.getbooks_r('./audiobooks')
 
     for (book, files) in books:
         # Creates a new feed for each book
@@ -27,7 +27,7 @@ def gen_feed(host):
             fe.id(url)
             fe.title(file_name)
             fe.description('Segment of the book')
-            fe.enclosure(url, str(os.path.getsize(file_path)), 'audio/mpeg')
+            fe.enclosure(requote_uri(url), str(os.path.getsize(file_path)), 'audio/mpeg')
 
         fg.title('Audiobook: ' + book)
         fg.link(href=host, rel='self')
@@ -35,4 +35,15 @@ def gen_feed(host):
         fg.rss_str(pretty=True)
 
         # Saves the file
-        fg.rss_file(os.path.join('./gen/', book + '.xml'))
+        rss_file_path = os.path.join('./gen/', book + '.xml')
+        ensure_dir(rss_file_path)
+        fg.rss_file(rss_file_path)
+
+
+def ensure_dir(file_path):
+    dir_path = os.path.dirname(file_path)
+    if not  os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    return dir_path
+
+        

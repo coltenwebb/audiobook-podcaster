@@ -1,5 +1,6 @@
 import os
 
+
 # Returns a list of the files in a path
 def listfiles(path):
     return [
@@ -14,9 +15,20 @@ def listdirs(path):
     ]
 
 
-# Returns a list of tuples (file_name, file_path). File name doesn't have an extension
+
+
+def acceptable_files(top , files):
+        acceptable_extensions = {
+            '.mp3', '.wav', '.aiff', '.m4a', '.m4b', '.m4p'
+        }
+        files = [(os.path.splitext(f)[0], os.path.join(top, f))
+                 for f in files
+                 if (os.path.splitext(f)[1].lower() in acceptable_extensions)]
+        return files
+
 def getbooks(root):
-    if not os.path.isdir('./audiobooks'):
+    ''' Returns a list of tuples (file_name, file_path). File name doesn't have an extension'''
+    if not os.path.isdir(root):
         print('There is no audiobooks directory. Create ./audiobooks')
 
     books = []
@@ -28,14 +40,24 @@ def getbooks(root):
         # Sorts the files alphabetically
         files_in_dir.sort()
         # List of tuples (file_name, file_path), also making sure they are one of the accepted audio file formats
-        acceptable_extensions = {
-            '.mp3', '.wav', '.aiff', '.m4a', '.m4b', '.m4p'
-        }
-        files = [(os.path.splitext(f)[0], os.path.join(book_dir_path, f))
-                 for f in files_in_dir
-                 if (os.path.splitext(f)[1].lower() in acceptable_extensions)]
-
+        files = acceptable_files(book_dir_path, files_in_dir)
         books.append((book_dir, files))
+    return books
+
+
+def getbooks_r(root):
+    ''' get books tupple (file_name, file_path)  recursively, dive into subdirectories'''
+    if not os.path.isdir(root):
+        print('There is no %s directory. Create %s' %(root, root))
+
+    books = []
+    for top, dirs, files in os.walk(root, followlinks=True):
+        files.sort()
+        # create records if any suitable files exists
+        files = acceptable_files(top, files)
+        if files:
+            books.append((top, files))
+
     return books
 
 
